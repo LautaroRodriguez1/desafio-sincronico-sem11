@@ -1,35 +1,36 @@
-document.addEventListener("DOMContentLoaded", ()=>{
-const formulario = document.getElementById("formulario");
-const Btnsub = document.getElementById("botons");
-const endpoint = "https://jsonplaceholder.typicode.com/users"
-const nombre = document.getElementById("nombre").value;
-const apellido = document.getElementById("apellido").value; 
-const FechadeN = document.getElementById("fechaden").value;
+document.addEventListener("DOMContentLoaded", () => {
+  const Btnsub = document.getElementById("botons");
+  const endpoint = "https://jsonplaceholder.typicode.com/users";
 
+  Btnsub.addEventListener("click", (fun) => {
+    fun.preventDefault();
 
-Btnsub.addEventListener("click", (fun)=>{
-fun.preventDefault();
-const DatosdelFormulario ={
-nombre: nombre,
-apellido: apellido,
-fechadenas: FechadeN,
-}
-JSON.stringify(DatosdelFormulario);
-console.log(JSON.stringify(DatosdelFormulario));
-})
+    const nombre = document.getElementById("nombre").value;
+    const apellido = document.getElementById("apellido").value;
+    const FechadeN = document.getElementById("fechaden").value;
 
+    const DatosdelFormulario = {
+      nombre: nombre,
+      apellido: apellido,
+      fechadenas: FechadeN,
+    };
+    const datosJSON = JSON.stringify(DatosdelFormulario);
+    console.log(datosJSON);
 
-fetch(endpoint, DatosdelFormulario)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`La solicitud falló con estado: ${response.status}`);
-    }
-    return response.json(); 
-  })
-  .then(responseData => {
-    console.log('Respuesta del servidor:', responseData);
-
-
-});
-
+    
+    fetch(endpoint, {
+      method: 'POST',
+      body: datosJSON,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error al enviar la solicitud:', error);
+    });
+  });
 });
